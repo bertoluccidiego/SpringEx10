@@ -1,7 +1,5 @@
 package com.example.SpringEx10.controllers;
 
-import com.example.SpringEx10.exceptions.NotEnoughMoneyException;
-import com.example.SpringEx10.models.ErrorDetails;
 import com.example.SpringEx10.models.PaymentDetails;
 import com.example.SpringEx10.services.PaymentService;
 import org.springframework.http.HttpStatus;
@@ -19,19 +17,10 @@ public class PaymentController {
 
     @PostMapping("/payment")
     public ResponseEntity<?> makePayment() {
-        try {
-            PaymentDetails paymentDetails = paymentService.processPayment();
+        PaymentDetails paymentDetails = paymentService.processPayment();
 
-            return ResponseEntity
-                    .status(HttpStatus.ACCEPTED)
-                    .body(paymentDetails);
-        } catch (NotEnoughMoneyException notEnoughMoneyException) {
-            ErrorDetails errorDetails = new ErrorDetails();
-            errorDetails.setMessage("Not enough money to make the payment.");
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(errorDetails);
-        }
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(paymentDetails);
     }
 }
